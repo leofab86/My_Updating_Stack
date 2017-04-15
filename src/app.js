@@ -10,6 +10,7 @@ import MainContainer from './containers/mainContainer';
 import Stateful from './components/test/stateful';
 import Functional from './components/test/functional';
 import ReduxContainer from './components/test/reduxContainer';
+import Login from './components/login';
 
 const { reduxDevtools } = window.CONFIG;
 
@@ -86,6 +87,7 @@ export function renderApp() {
 					<MainContainer exact path='/stateful' component={Stateful}/>
 					<MainContainer path='/stateful/:param' component={Stateful}/>
 					<MainContainer path='/redux' component={ReduxContainer}/>
+					<MainContainer path='/login' component={Login}/>
 				</Switch>
 			</Router>
 		</Provider>

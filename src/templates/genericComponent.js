@@ -39,4 +39,4 @@ export default chainHOC(GenericComponent, ['updateReporterPP']);
 // }
 
 
-//export default chainHOC(GenericComponent, ['stateTrackerHOC', 'updateReporterII']);
+//export default chainHOC(GenericComponent, ['stateTrackerII', 'updateReporterII']);

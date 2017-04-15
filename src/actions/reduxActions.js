@@ -30,11 +30,11 @@ export function addData (data) {
 }
 
 //------------- Async Actions ------------
-export function asyncLogin (email, password, callback) {
+export function asyncLogin (form, callback) {
 	return function (dispatch) {
-		login(email, password, function (session) {
-			dispatch(newSession(session));
-			if(callback) callback(session)
+		login(form, function (user) {
+			dispatch(newSession(user));
+			if(callback) callback(user)
 		})
 	}
 }

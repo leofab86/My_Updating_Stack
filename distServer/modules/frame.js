@@ -114,27 +114,23 @@ function authenticate(req, res, success) {
 function createSession(user, authHeader) {
 	let session = {
 		authHeader: '',
-		status: 'logged-out',
-		name: '',
+		isSignedIn: false,
+		user_name: '',
 		role: ''
 	};
 
 	if (!user._id) return session;
 
-	let name;
-	let role;
+	session.isSignedIn = true;
+	session.authHeader = authHeader;
+
 	if (user.roles.account != undefined) {
-		name = user.roles.account.name;
-		role = 'account';
+		session.user_name = user.roles.account.name;
+		session.role = 'account';
 	} else if (user.roles.admin != undefined) {
-		name = user.roles.admin.name;
-		role = 'admin';
+		session.user_name = user.roles.admin.name;
+		session.role = 'admin';
 	}
-	session = {
-		authHeader: authHeader,
-		status: 'logged-in',
-		name: name,
-		role: role
-	};
+
 	return session;
 }

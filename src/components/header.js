@@ -11,6 +11,7 @@ const { ReactComponent, debugging } = window.CONFIG;
 class Header extends ReactComponent{
 	static propTypes = {
 		isSignedIn: is.bool.isRequired,
+		user_name: is.string,
 		asyncLogout: is.func.isRequired,
 		newPopup: is.func.isRequired,
 		closePopup: is.func.isRequired
@@ -44,7 +45,7 @@ class Header extends ReactComponent{
 	}
 
 	render() {
-		if(debugging) console.log('HEADER RENDERING');
+		if(debugging) console.log(this.props);
 		const accountLinks = (this.props.isSignedIn) ?
 			<ul className="nav navbar-nav navbar-right">
 				<li className="dropdown">
@@ -54,7 +55,7 @@ class Header extends ReactComponent{
 						role="button" 
 						aria-haspopup="true" 
 						aria-expanded="false"
-						>{this.props.name} <span className="caret"></span>
+						>{this.props.user_name} <span className="caret"></span>
 					</a>
 					<ul className="dropdown-menu">
 						<li><Link to={`/account/${this.props.email}`}>My Account</Link></li>

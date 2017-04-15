@@ -2,19 +2,19 @@
 const { ajaxLogging } = window.CONFIG;
 
 function generateMethod (type) {
-	return (url, headers, data) => {
+	return (url, data, headers) => {
 		return new Promise( (success, error) => {
 			$.ajax({
 				url,
 				type,
 				headers,
 				data,
-				success: function (a, b, xhr) {
-					if(ajaxLogging) console.log(arguments, xhr.getResponseHeader('access-token'));
-					success(arguments);
+				success: function (data, status, xhr) {
+					if(ajaxLogging) console.log(arguments);
+					success(data);
 				},
 				error: function(e) {
-					if(ajaxLogging) console.log(arguments, e.getResponseHeader('access-token'));
+					if(ajaxLogging) console.log(arguments);
 					error(e);
 				}
 			})

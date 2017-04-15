@@ -32,11 +32,11 @@ class ViewContainer extends ReactComponent {
 		const { component: Component, dispatcher, appState, ...rest } = this.props;
 
 		//Destructure all dispatchable redux functions that components need to use
-		const { closePopup, asyncSignup, asyncLogin, asyncLogout, newPopup
+		const { newPopup, closePopup, asyncSignup, asyncLogin, asyncLogout 
 		} = dispatcher;
 
 		const { globalPopup, auth } = appState;
-		const { isSignedIn } = auth;
+		const { isSignedIn, user_name } = auth;
 
 		const componentName = Component.displayName || Component.name;
 		const stateRouter = {
@@ -48,6 +48,9 @@ class ViewContainer extends ReactComponent {
 			},
 			ReduxContainer: () => {
 				return { thisIs: 'reduxContainer' }
+			},
+			Login: () => {
+				return { asyncLogin }
 			}
 		}
 
@@ -55,7 +58,7 @@ class ViewContainer extends ReactComponent {
 			<Route {...rest} render={routeProps => 
 				<div>
 					{ (stateTracker) ? <StateTracker appState={{...this.props.appState}}/> : null }
-					<Header {...{isSignedIn, asyncLogout, newPopup, closePopup}}/>
+					<Header {...{isSignedIn, user_name, asyncLogout, newPopup, closePopup}}/>
 					<div className='container'>
 						<Component {...routeProps} {...stateRouter[componentName]()}/>
 					</div>

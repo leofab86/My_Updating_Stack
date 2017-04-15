@@ -7,13 +7,14 @@ import chainHOC from '../helpers/chainHOC';
 const { ReactComponent } = window.CONFIG;
 
 
-class COMPONENTNAME extends ReactComponent {
+class Login extends ReactComponent {
 	static propTypes = {
 		propName: is.oneOfType([is.string, is.number])
 	};
 
 	state = {
-
+		username: '',
+		password: ''
 	}
 
 	inputHandler = event => {
@@ -22,7 +23,7 @@ class COMPONENTNAME extends ReactComponent {
 	}
 
 	submit = () => {
-
+		this.props.asyncLogin(this.state)
 	}
 
 	render() {
@@ -45,14 +46,12 @@ class COMPONENTNAME extends ReactComponent {
 
 				<div className='jumbotron'><h3>Generic Component w/ Inputs</h3></div>
 
-				{renderInput('name', 'Label')}
+				{renderInput('username', 'Username')}
 				<br/>
 
-				{renderInput('name', 'Label')}
+				{renderInput('password', 'Password', 'password')}
 				<br/>
 
-				{renderInput('name', 'Label')}
-				<br/>
 
 				<div className='centerButton'>
 					<button className="btn btn-success" 
@@ -65,5 +64,5 @@ class COMPONENTNAME extends ReactComponent {
 	}
 }
 
-export default chainHOC(COMPONENTNAME, ['stateTrackerII', 'updateReporterII']);
+export default chainHOC(Login, ['stateTrackerII', 'updateReporterII']);
 

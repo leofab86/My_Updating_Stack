@@ -27,7 +27,8 @@ module.exports = {
 		debugging: true,
 		reduxDevtools: false,
 		stateTracker: true,
-		updateReports: { update: true, pass: false }
+		updateReports: { update: true, pass: false },
+		ajaxLogging: true
 	},
 
 	
