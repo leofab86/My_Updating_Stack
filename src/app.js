@@ -3,12 +3,12 @@ import { createStore, compose, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'; 
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
 
 import {AUTH, POPUP, DATA_GET, DATA_ADD} from './actions/constants';
 import MainContainer from './containers/mainContainer';
-import TestStateful from './components/test/stateful';
-import TestFunctional from './components/test/functional';
+import Stateful from './components/test/stateful';
+import Functional from './components/test/functional';
 import ReduxContainer from './components/test/reduxContainer';
 
 const { reduxDevtools } = window.CONFIG;
@@ -74,28 +74,20 @@ if (reduxDevtools) {
 	)(createStore)(mainReducer);
 }
 
-class AppRouter extends React.Component{
-	render() {
-		return(
-			<Router history={browserHistory}>
-				<Route path='/' component={MainContainer}>
-					<IndexRoute component={TestFunctional} />
-					<Route path='/stateful' component={TestStateful} />
-					<Route path='/stateful/:param' component={TestStateful} />
-					<Route path='/redux' component={ReduxContainer} />
-				</Route>
-				<Route path='/noContainer' component={TestFunctional} />
-			</Router>
-		);
-	}
-}
 
 export function renderApp() {
 	
 
 	return (
 		<Provider store={store} key="provider">
-			<AppRouter />
+			<Router>
+				<Switch>
+					<MainContainer exact path='/' component={Functional}/>
+					<MainContainer exact path='/stateful' component={Stateful}/>
+					<MainContainer path='/stateful/:param' component={Stateful}/>
+					<MainContainer path='/redux' component={ReduxContainer}/>
+				</Switch>
+			</Router>
 		</Provider>
 	);
 }

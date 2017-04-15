@@ -1,6 +1,3 @@
-04/14/17
+04/15/17
 
-react@15.4.2
-react-router@3.0.0
-
-URL routing happens in app.js. MainContainer is given child routes. MainContainer recieves total appState and routes props based on currently routed child.
+React Router 4. App.js renders router, MainContainer routes state

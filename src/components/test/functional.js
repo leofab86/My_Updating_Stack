@@ -1,6 +1,6 @@
 import React from 'react';
 import cookie from 'react-cookie';
-import { browserHistory } from 'react-router';
+import { BrowserHistory } from 'react-router-dom';
 
 import ajax from '../../helpers/ajax';
 import { errorHandler } from '../../helpers/appHelpers';
@@ -26,7 +26,7 @@ function Functional (props) {
 	}
 
 	function navigate () {
-		browserHistory.push('/stateful')
+		props.history.push('/stateful')
 	}
 
 	const grid = "col-xs-10 col-sm-10 col-md-8 col-lg-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-3";

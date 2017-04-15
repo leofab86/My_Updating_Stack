@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 
 import * as AppActions from '../actions/reduxActions';
 import Header from '../components/header';
@@ -27,24 +28,23 @@ const mapDispatchToProps = (dispatch) => {
 
 class ViewContainer extends ReactComponent {
 	
-	render(){		
+	render(){
+		const { component: Component, dispatcher, appState, ...rest } = this.props;
+
 		//Destructure all dispatchable redux functions that components need to use
 		const { closePopup, asyncSignup, asyncLogin, asyncLogout, newPopup
-		} = this.props.dispatcher;
+		} = dispatcher;
 
-		const { globalPopup, auth } = this.props.appState;
+		const { globalPopup, auth } = appState;
 		const { isSignedIn } = auth;
-		
-		const Child = this.props.children.type;
-		const childName = Child.displayName || Child.name;
 
-		const propsRouter = {
+		const componentName = Component.displayName || Component.name;
+		const stateRouter = {
 			Stateful: () => {
-				const param = this.props.children.props.params.param;
-				return { thisIs: 'stateful', param }
+				return { thisIs: 'stateful', isSignedIn }
 			},
 			Functional: () => {
-				return { thisIs: 'functional' }
+				return { thisIs: 'functional', globalPopup }
 			},
 			ReduxContainer: () => {
 				return { thisIs: 'reduxContainer' }
@@ -52,16 +52,16 @@ class ViewContainer extends ReactComponent {
 		}
 
 		return (
-			<div>
-				{ (stateTracker) ? <StateTracker appState={{...this.props.appState}}/> : null }
-
-				<Header {...{isSignedIn, asyncLogout, newPopup, closePopup}}/>
-				<div className='container'>
-					<Child {...propsRouter[childName]()} />						
+			<Route {...rest} render={routeProps => 
+				<div>
+					{ (stateTracker) ? <StateTracker appState={{...this.props.appState}}/> : null }
+					<Header {...{isSignedIn, asyncLogout, newPopup, closePopup}}/>
+					<div className='container'>
+						<Component {...routeProps} {...stateRouter[componentName]()}/>
+					</div>
+					<GlobalPopup {...{...globalPopup, closePopup, asyncSignup, asyncLogin}}/>
 				</div>
-
-				<GlobalPopup {...{...globalPopup, closePopup, asyncSignup, asyncLogin}}/>
-			</div>
+			}/>
 		);
 	}
 }

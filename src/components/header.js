@@ -1,11 +1,11 @@
 import React from 'react';
 import is from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import chainHOC from '../helpers/chainHOC';
 import Stateful from './test/stateful';
 
-const { ReactComponent } = window.CONFIG;
+const { ReactComponent, debugging } = window.CONFIG;
 
 
 class Header extends ReactComponent{
@@ -44,6 +44,7 @@ class Header extends ReactComponent{
 	}
 
 	render() {
+		if(debugging) console.log('HEADER RENDERING');
 		const accountLinks = (this.props.isSignedIn) ?
 			<ul className="nav navbar-nav navbar-right">
 				<li className="dropdown">
