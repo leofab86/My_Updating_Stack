@@ -1,14 +1,4 @@
 /*----------------------------Misc-----------------------------*/
-
-.videoGreen {
-	background-color: #d5ffd3;
-}
-
-.videoYellow {
-	background-color: #ffffd3;
-}
-
-
 .centerButton {
 	text-align:center;
 }
@@ -31,36 +21,14 @@
 	cursor: pointer;
 }
 /*---------------------------------------------------------------*/
-/*----------------------------MatchDetails-----------------------------*/
-.matchHeader {
-	text-align: center;
-}
-
-.optionsBar {
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-.settingsButton {
-	float: right;
-}
-
-.matchDetails {
-	clear: both;
-	border: 1px solid;
-	width: auto;
-	text-align: center;
-	margin:10px;
-}
-/*---------------------------------------------------------------*/
-/*----------------------------MatchCards-----------------------------*/
-.matchesContainer {
+/*----------------------------DataCards-----------------------------*/
+.dataContainer {
 	display:flex;
 	flex-wrap: wrap;
 	justify-content: center;
 }
 
-.matchCard {
+.dataCard {
 	flex-basis: auto;
 	border: 1px solid;
 	width: 230px;
@@ -69,23 +37,6 @@
 	cursor: pointer;
 }
 /*---------------------------------------------------------------*/
-/*---------------- createChallengers ----------------------*/
-.createChallengersButtons {
-	margin-bottom: 10px;
-}
-
-.disabled {
-	pointer-events: none;
-}
-
-.leftColumn {
-	margin-bottom: 20px;
-}
-
-.rightColumn {
-	margin-bottom: 20px;	
-}
-/*------------------------------------------------------------*/
 /*----------------------globalPopup---------------------------*/
 .fixedPlane {
 	z-index: 5;

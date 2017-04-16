@@ -12,9 +12,10 @@
 		
 		<script>
 			window.CONFIG = <%- config %>;
-			window.session = <%- expressSession %>;
-			<% if(test) { %>
-				window.express.test = <%- test %>
+			window.express = {};
+			window.express.session = <%- session %>
+			<% if(errors) { %>
+				window.express.errors = <%- errors %>
 			<% } %>
 		</script>
 

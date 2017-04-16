@@ -1,6 +1,7 @@
-Version: 1.1.1
-04/15/17
+v1.1.2
 
-Description: React Router 4. App.js renders router, MainContainer routes state.
+04/16/17
 
-Update: Fixed login api with Frame using a generic Login page.
+Description: Using React Router 4. App.js renders router, MainContainer connects to redux store and routes state.
+
+Update: Authenticate Get requests, signup and logout enebled.

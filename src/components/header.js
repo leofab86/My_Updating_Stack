@@ -3,7 +3,7 @@ import is from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import chainHOC from '../helpers/chainHOC';
-import Stateful from './test/stateful';
+import Login from './login';
 
 const { ReactComponent, debugging } = window.CONFIG;
 
@@ -22,10 +22,9 @@ class Header extends ReactComponent{
 			visible: true,
 			wide: false,
 			label: '',
-			component: Stateful,
+			component: Login,
 			componentProps: {
 				loginCallback: () => this.props.closePopup(),
-				successUrl: window.location.href
 			}
 		})
 	}
@@ -35,17 +34,16 @@ class Header extends ReactComponent{
 			visible: true,
 			wide: false,
 			label: '',
-			component: Stateful,
+			component: Login,
 			componentProps: {
 				type: 'signup',
 				signupCallback: () => this.props.closePopup(),
-				successUrl: window.location.href
+				//successUrl: window.location.href
 			}
 		})
 	}
 
 	render() {
-		if(debugging) console.log(this.props);
 		const accountLinks = (this.props.isSignedIn) ?
 			<ul className="nav navbar-nav navbar-right">
 				<li className="dropdown">

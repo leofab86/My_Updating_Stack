@@ -5,7 +5,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
 
-import {AUTH, POPUP, DATA_GET, DATA_ADD} from './actions/constants';
+import { newSession } from './actions/reduxActions';
+import { errorHandler } from './helpers/appHelpers';
+import {AUTH, AUTH_CLEAR, POPUP, DATA_GET, DATA_ADD} from './actions/constants';
 import MainContainer from './containers/mainContainer';
 import Stateful from './components/test/stateful';
 import Functional from './components/test/functional';
@@ -25,6 +27,8 @@ function authReducer ( state = { isSignedIn: false }, action) {
 	switch (action.type) {
 		case AUTH:
 			return {...state, ...action.userObj}
+		case AUTH_CLEAR:
+			return action.userObj
 		default:
 			return state
 	}
@@ -77,7 +81,10 @@ if (reduxDevtools) {
 
 
 export function renderApp() {
-	
+	//Authenticate and get resources here?
+	if(window.express.errors) errorHandler(window.express.errors);
+	store.dispatch(newSession(window.express.session));
+
 
 	return (
 		<Provider store={store} key="provider">

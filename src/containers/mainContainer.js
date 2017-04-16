@@ -50,14 +50,14 @@ class ViewContainer extends ReactComponent {
 				return { thisIs: 'reduxContainer' }
 			},
 			Login: () => {
-				return { asyncLogin }
+				return { asyncLogin, asyncSignup }
 			}
 		}
 
 		return (
 			<Route {...rest} render={routeProps => 
 				<div>
-					{ (stateTracker) ? <StateTracker appState={{...this.props.appState}}/> : null }
+					{ stateTracker ? <StateTracker appState={{...this.props.appState}}/> : null }
 					<Header {...{isSignedIn, user_name, asyncLogout, newPopup, closePopup}}/>
 					<div className='container'>
 						<Component {...routeProps} {...stateRouter[componentName]()}/>

@@ -23,13 +23,11 @@ export function authenticate (authTokens, callback) {
 }
 
 
-export function signup (form, callback) {
-	// cookie.remove('batchTimer', { path: '/' });
-	// ajax.post('/auth/', form, form).then( argumentArray => {
-	// 	const email = argumentArray[0].data.email;
-	// 	toastrMsg('success', `An email confirmation has been sent to ${email}`);
-	// 	if (callback) callback();
-	// }).catch( e => errorHandler(e) )
+export function signup ({name, email, username, password}, callback) {
+	ajax.post('/api/signup', {name, email, username, password}).then( user => {
+		if (callback) callback(user);
+		if (!callback) console.log('No Signup Callback, wasted ', user);
+	}).catch( e => errorHandler(e) )
 }
 
 
@@ -42,10 +40,9 @@ export function login ({username, password}, callback){
 
 
 export function logout () {
-	// const headers = cookie.load('authHeaders');
-	// cookie.remove('authHeaders', { path: '/' });
-	// cookie.remove('batchTimer', { path: '/' });
-	// ajax.delete('/auth/sign_out', headers).catch( e => errorHandler(e) )
+	ajax.get('/api/logout').then(() => {
+		cookie.remove('authHeader', { path: '/' });
+	}).catch( e => errorHandler(e) )
 }
 
 

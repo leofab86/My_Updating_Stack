@@ -16,11 +16,53 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const frameUrl = `http://127.0.0.1:${_config2.default.framePort}/api`;
 
-module.exports = app => {
+function authenticate(req, res, callback) {
+
+	const options = {
+		"method": 'GET',
+		"url": `${frameUrl}/users/my`,
+		"headers": {
+			"authorization": req.cookies.authHeader
+		}
+	};
+
+	(0, _request2.default)(options, (err, httpResponse, body) => {
+		if (err) {
+			console.error(err);
+			return callback(createSession(null), err);
+		}
+
+		callback(createSession(JSON.parse(body), req.cookies.authHeader));
+	});
+}
+
+function createSession(user = {}, authHeader) {
+	let session = {
+		isSignedIn: false
+	};
+
+	if (!user._id) return session;
+
+	session.isSignedIn = true;
+	session.authHeader = authHeader;
+
+	if (user.roles.account != undefined) {
+		session.user_name = user.roles.account.name;
+		session.role = 'account';
+	} else if (user.roles.admin != undefined) {
+		session.user_name = user.roles.admin.name;
+		session.role = 'admin';
+	}
+
+	return session;
+}
+
+const frameModule = app => {
 
 	app.post('/api/signup', _bodyParser2.default.urlencoded({ extended: true }), (req, res) => {
 
-		_request2.default.post({ url: frameUrl + '/signup', form: req.body }, (err, httpResponse, body) => {
+		_request2.default.post({ url: `${frameUrl}/signup`, form: req.body }, (err, httpResponse, body) => {
+			console.log(body);
 			if (err) {
 				console.error(err);
 				return res.send(err);
@@ -35,7 +77,7 @@ module.exports = app => {
 
 	app.post('/api/login', _bodyParser2.default.urlencoded({ extended: true }), (req, res) => {
 
-		_request2.default.post({ url: frameUrl + '/login', form: req.body }, (err, httpResponse, body) => {
+		_request2.default.post({ url: `${frameUrl}/login`, form: req.body }, (err, httpResponse, body) => {
 			console.log(body);
 			if (err) {
 				console.error(err);
@@ -53,7 +95,7 @@ module.exports = app => {
 
 		const options = {
 			"method": 'DELETE',
-			"url": frameUrl + '/logout',
+			"url": `${frameUrl}/logout`,
 			"headers": {
 				"authorization": req.cookies.authHeader
 			}
@@ -75,62 +117,19 @@ module.exports = app => {
 		});
 	});
 
-	app.use(function (req, res, next) {
-		authenticateAllGet(req, res, next);
+	app.use(function authenticateGetRequests(req, res, next) {
+		if (req.method === 'GET') {
+			console.log('authenticating this GET request');
+
+			authenticate(req, res, function (session, err) {
+				if (err) res.locals.errors = [err];
+				res.locals.session = JSON.stringify(session);
+				next();
+			});
+		} else next();
 	});
 };
 
-function authenticateAllGet(req, res, next) {
-	if (req.method === 'GET') {
-		console.log('authenticating this GET request');
+frameModule.authenticate = authenticate;
 
-		authenticate(req, res, function (session) {
-			res.locals.expressSession = JSON.stringify(session);
-			next();
-		});
-	} else next();
-}
-
-function authenticate(req, res, success) {
-
-	const options = {
-		"method": 'GET',
-		"url": frameUrl + '/users/my',
-		"headers": {
-			"authorization": req.cookies.authHeader
-		}
-	};
-
-	(0, _request2.default)(options, (err, httpResponse, body) => {
-		if (err) {
-			console.error(err);
-			res.send(err);
-		}
-		let session = createSession(JSON.parse(body), req.cookies.authHeader);
-		success(session);
-	});
-}
-
-function createSession(user, authHeader) {
-	let session = {
-		authHeader: '',
-		isSignedIn: false,
-		user_name: '',
-		role: ''
-	};
-
-	if (!user._id) return session;
-
-	session.isSignedIn = true;
-	session.authHeader = authHeader;
-
-	if (user.roles.account != undefined) {
-		session.user_name = user.roles.account.name;
-		session.role = 'account';
-	} else if (user.roles.admin != undefined) {
-		session.user_name = user.roles.admin.name;
-		session.role = 'admin';
-	}
-
-	return session;
-}
+module.exports = frameModule;

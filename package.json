@@ -1,7 +1,7 @@
 {
   "name": "my_updating_stack",
-  "version": "1.1.1",
-  "description": "React Router 4. App.js renders router, MainContainer routes state",
+  "version": "1.1.2",
+  "description": "Using React Router 4. App.js renders router, MainContainer connects to redux store and routes state.",
   "main": "./distServer/server.js",
   "scripts": {
     "gulp": "gulp",

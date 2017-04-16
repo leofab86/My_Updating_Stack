@@ -17,19 +17,16 @@ class GlobalPopup extends ReactComponent{
 		asyncSignup: is.func.isRequired, 
 	};
 
-	close(){
-		this.props.closePopup()
-	}
-
 	render(){
-		const props = this.props;
-		if(!props.visible) return null;
+		const { 
+			component: Component, visible, label, wide, closePopup, asyncSignup, asyncLogin, componentProps
+		} = this.props;
+		
+		if(!visible) return null;
 
-		const label = props.label;
 		const labelRender = (!label) ? null : <h2>{label}</h2>
-		const Component = props.component;
 
-		const grid = (props.wide) ? 
+		const grid = (wide) ? 
 			'col-xs-10 col-sm-10 col-md-8 col-lg-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-3' 
 		:	'col-xs-8 col-sm-8 col-md-6 col-lg-4 col-xs-offset-2 col-sm-offset-2 col-md-offset-3 col-lg-offset-4'
 
@@ -38,12 +35,12 @@ class GlobalPopup extends ReactComponent{
 				<div className='container'>
 					<div className={grid}>
 						<div className='globalPopup'>
-							<button onClick={this.close.bind(this)} className='closeXButton'>X</button>
+							<button onClick={closePopup} className='closeXButton'>X</button>
 							{labelRender}
 							<Component 
-								popupProps={props.componentProps} 
-								asyncSignup={props.asyncSignup}
-								asyncLogin={props.asyncLogin}/>
+								popupProps={componentProps} 
+								asyncSignup={asyncSignup}
+								asyncLogin={asyncLogin}/>
 							<br/>
 						</div>
 					</div>

@@ -14,7 +14,7 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const app = new _express2.default();
+const app = (0, _express2.default)();
 
 app.use(function logRequest(req, res, next) {
 	console.log(`${req.method}: ${req.originalUrl}`);
@@ -37,13 +37,13 @@ require('./database.js');
 
 app.use('/virtualPath', _express2.default.static(__dirname + '/../dist'));
 
-require('./modules/dbRoutes')(app);
+require('./modules/apiRoutes')(app);
 require('./modules/frame')(app);
 
 app.get('*', (req, res, next) => {
 	console.log('catchAll');
 	res.locals.config = JSON.stringify({});
-	res.locals.test = null;
+	res.locals.errors = res.locals.errors ? JSON.stringify(res.locals.errors) : null;
 	res.render('index.html');
 });
 

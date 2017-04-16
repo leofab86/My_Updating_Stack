@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import Post from '../models/Post';
+import { authenticate } from './frame';
 
 
 module.exports = (app) => {

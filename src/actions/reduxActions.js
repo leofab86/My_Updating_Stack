@@ -1,6 +1,6 @@
 import { signup, login, logout } from './authActions';
 import { getUsers, editUser, getData, postData, editData } from './apiActions';
-import { AUTH, POPUP, CHALLENGE, DATA_GET, DATA_ADD } from './constants';
+import { AUTH, AUTH_CLEAR, POPUP, CHALLENGE, DATA_GET, DATA_ADD } from './constants';
 
 // ------------ Redux Actions -------------
 export function newSession(userObj) {
@@ -8,7 +8,7 @@ export function newSession(userObj) {
 }
 
 export function clearSession() {
-	return { type: AUTH, userObj: {
+	return { type: AUTH_CLEAR, userObj: {
 		isSignedIn: false,
 	}}
 }
@@ -41,7 +41,10 @@ export function asyncLogin (form, callback) {
 
 export function asyncSignup (form, callback) {
 	return function (dispatch) {
-		signup(form, callback);
+		signup(form, function (user) {
+			dispatch(newSession(user));
+			if(callback) callback(user)
+		});
 	}
 }
 

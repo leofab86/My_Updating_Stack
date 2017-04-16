@@ -9,12 +9,16 @@ const { ReactComponent } = window.CONFIG;
 
 class Login extends ReactComponent {
 	static propTypes = {
-		propName: is.oneOfType([is.string, is.number])
+		propName: is.oneOfType([is.string, is.number]),
+		asyncLogin: is.func.isRequired,
+		asyncSignup: is.func.isRequired
 	};
 
 	state = {
 		username: '',
-		password: ''
+		password: '',
+		name:'',
+		email:''
 	}
 
 	inputHandler = event => {
@@ -27,8 +31,10 @@ class Login extends ReactComponent {
 	}
 
 	render() {
-		const grid = "col-xs-10 col-sm-10 col-md-8 col-lg-8 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-2"
-		const { a } = this.props;
+		const { loginCallback, signupCallback } = this.props.popupProps || {};
+		const { asyncLogin, asyncSignup } = this.props;		
+		const grid = this.props.popupProps ? null :
+			"col-xs-10 col-sm-10 col-md-8 col-lg-8 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-2"
 
 		const renderInput = (name, label, type='text') => {
 			return (
@@ -46,6 +52,12 @@ class Login extends ReactComponent {
 
 				<div className='jumbotron'><h3>Generic Component w/ Inputs</h3></div>
 
+				{renderInput('name', 'Name')}
+				<br/>
+
+				{renderInput('email', 'Email')}
+				<br/>
+
 				{renderInput('username', 'Username')}
 				<br/>
 
@@ -55,8 +67,11 @@ class Login extends ReactComponent {
 
 				<div className='centerButton'>
 					<button className="btn btn-success" 
-						onClick={this.submit}
-						>Submit</button>				
+						onClick={asyncLogin.bind(null, this.state, loginCallback)}
+						>Login</button>
+					<button className="btn btn-success" 
+						onClick={asyncSignup.bind(null, this.state, signupCallback)}
+						>Signup</button>			
 				</div>
 
 			</div>
@@ -64,5 +79,5 @@ class Login extends ReactComponent {
 	}
 }
 
-export default chainHOC(Login, ['stateTrackerII', 'updateReporterII']);
+export default chainHOC(Login, ['stateTrackerII']);
 

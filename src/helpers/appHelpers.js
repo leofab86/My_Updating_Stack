@@ -7,11 +7,9 @@ export function toastrMsg (type, msg) {
 	toastr[type](msg)
 }
 
-export function errorHandler (e) {
-	console.error(e);
-	const response = e.responseJSON;
-	const errors = (response) ? response.error || response.errors.full_messages || response.errors : null;
-	if(!errors) throw new Error(`Not reading response or response has no error`);
-	if (Array.isArray(errors)) { errors.map( value => toastrMsg('error', value) ) }
+export function errorHandler (errors) {
+	console.error(JSON.stringify(errors));
+	//if(!errors) throw new Error(`Not reading errors`);
+	if (Array.isArray(errors)) { errors.map( value => toastrMsg('error', JSON.stringify(value)) ) }
 	else toastrMsg('error', errors)	
 }

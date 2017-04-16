@@ -4,89 +4,12 @@ import config from '../../config';
 
 const frameUrl = `http://127.0.0.1:${config.framePort}/api`;
 
-module.exports = (app) => {
 
-	app.post('/api/signup', bodyParser.urlencoded({extended: true}), (req, res) => {
-		
-		request.post({url:frameUrl + '/signup', form: req.body}, (err,httpResponse,body) => {
-			if (err) {
-				console.error(err);
-				return res.send(err);
-			}
-			body = JSON.parse(body);
-			if(body.error) res.send(body);
-			res.cookie('authHeader', body.authHeader);
-			let session = createSession(body.user, body.authHeader);
-			res.send(session);
-		})
-	});	
-
-	app.post('/api/login', bodyParser.urlencoded({extended: true}), (req, res) => {
-		
-		request.post({url:frameUrl + '/login', form: req.body}, (err,httpResponse,body) => {
-			console.log(body);
-			if (err) {
-				console.error(err);
-				return res.send(err);
-			}
-			body = JSON.parse(body);
-			if(body.error) res.send(body);
-			res.cookie('authHeader', body.authHeader);
-			let session = createSession(body.user, body.authHeader);
-			res.send(session);
-		})
-	});
-
-	app.get('/api/logout', (req, res) => {
-
-		const options = {
-			"method": 'DELETE',
-			"url": frameUrl + '/logout',
-			"headers": {
-				"authorization": req.cookies.authHeader
-			}
-		};
-		
-		request(options, (err,httpResponse,body) => {
-			if (err) {
-				console.error(err);	
-				return res.send(err);
-			}
-			res.send(body);
-		})
-	});
-
-	app.get('/api/authenticate', (req, res) => {
-		
-		authenticate(req, res, function(session){
-			res.send(session);
-		})
-	});
-
-	app.use(function(req, res, next) {
-		authenticateAllGet(req, res, next)
-	});
-}
-
-
-
-function authenticateAllGet(req, res, next) {
-	if (req.method === 'GET') {
-		console.log('authenticating this GET request');
-
-		authenticate(req, res, function(session) {
-			res.locals.expressSession = JSON.stringify(session);
-			next()
-		})
-
-	} else next();
-}
-
-function authenticate (req, res, success) {
+function authenticate (req, res, callback) {
 	
 	const options = {
 		"method": 'GET',
-		"url": frameUrl + '/users/my',
+		"url": `${frameUrl}/users/my`,
 		"headers": {
 			"authorization": req.cookies.authHeader
 		}
@@ -95,19 +18,16 @@ function authenticate (req, res, success) {
 	request(options, (err,httpResponse,body) => {
 		if (err) {
 			console.error(err);
-			res.send(err)	
+			return callback( createSession(null), err )	
 		}
-		let session = createSession(JSON.parse(body), req.cookies.authHeader);
-		success(session);
+		
+		callback(createSession( JSON.parse(body), req.cookies.authHeader ));
 	})
 }
 
-function createSession (user, authHeader) {
+function createSession (user = {}, authHeader) {
 	let session = {
-		authHeader: '',
 		isSignedIn: false,
-		user_name: '',
-		role: ''
 	};
 
 	if (!user._id) return session;
@@ -126,3 +46,86 @@ function createSession (user, authHeader) {
 
 	return session;
 }
+
+
+const frameModule = (app) => {
+
+	app.post('/api/signup', bodyParser.urlencoded({extended: true}), (req, res) => {
+		
+		request.post({url:`${frameUrl}/signup`, form: req.body}, (err,httpResponse,body) => {
+			console.log(body);
+			if (err) {
+				console.error(err);
+				return res.send(err);
+			}
+			body = JSON.parse(body);
+			if(body.error) res.send(body);
+			res.cookie('authHeader', body.authHeader);
+			let session = createSession(body.user, body.authHeader);
+			res.send(session);
+		})
+	});	
+
+
+	app.post('/api/login', bodyParser.urlencoded({extended: true}), (req, res) => {
+		
+		request.post({url:`${frameUrl}/login`, form: req.body}, (err,httpResponse,body) => {
+			console.log(body);
+			if (err) {
+				console.error(err);
+				return res.send(err);
+			}
+			body = JSON.parse(body);
+			if(body.error) res.send(body);
+			res.cookie('authHeader', body.authHeader);
+			let session = createSession(body.user, body.authHeader);
+			res.send(session);
+		})
+	});
+
+
+	app.get('/api/logout', (req, res) => {
+
+		const options = {
+			"method": 'DELETE',
+			"url": `${frameUrl}/logout`,
+			"headers": {
+				"authorization": req.cookies.authHeader
+			}
+		};
+		
+		request(options, (err,httpResponse,body) => {
+			if (err) {
+				console.error(err);	
+				return res.send(err);
+			}
+			res.send(body);
+		})
+	});
+
+
+	app.get('/api/authenticate', (req, res) => {
+		
+		authenticate(req, res, function(session){
+			res.send(session);
+		})
+	});
+
+
+	app.use(function authenticateGetRequests (req, res, next) {
+		if (req.method === 'GET') {
+			console.log('authenticating this GET request');
+
+			authenticate(req, res, function(session, err) {
+				if(err) res.locals.errors = [err];
+				res.locals.session = JSON.stringify(session);
+				next()
+			})
+
+		} else next();
+	});
+}
+
+frameModule.authenticate = authenticate;
+
+module.exports = frameModule;

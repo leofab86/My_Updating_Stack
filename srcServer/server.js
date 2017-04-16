@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import config from '../config';
 
-const app = new express();
+const app = express();
 
 app.use(function logRequest (req, res, next) {
 	console.log(`${req.method}: ${req.originalUrl}`); 
@@ -25,15 +25,13 @@ require('./database.js');
 
 app.use('/virtualPath', express.static(__dirname + '/../dist'));
 
-
-
-require('./modules/dbRoutes')(app);
+require('./modules/apiRoutes')(app);
 require('./modules/frame')(app);
 
 app.get('*', (req, res, next) => {
 	console.log('catchAll');
 	res.locals.config = JSON.stringify({});
-	res.locals.test = null;
+	res.locals.errors = res.locals.errors ? JSON.stringify(res.locals.errors) : null;
 	res.render('index.html');
 })
 
