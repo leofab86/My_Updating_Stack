@@ -1,4 +1,4 @@
-import { signup, login, logout } from './authActions';
+import { signup, login, logout, authenticate } from './authActions';
 import { getUsers, editUser, getData, postData, editData } from './apiActions';
 import { AUTH, AUTH_CLEAR, POPUP, CHALLENGE, DATA_GET, DATA_ADD } from './constants';
 
@@ -52,6 +52,16 @@ export function asyncLogout () {
 	return function (dispatch) {
 		dispatch(clearSession());
 		logout()
+	}
+}
+
+export function asyncAuthenticate (callback) {
+	return function (dispatch) {
+		authenticate(function(user){
+			dispatch(newSession(user));
+			if(callback) callback(user)
+		})
+		
 	}
 }
 

@@ -11,7 +11,7 @@ class Tabs extends ReactComponent{
 	static propTypes = {
 		activeTab: is.oneOfType([is.string, is.number]).isRequired,
 		tabs: is.array.isRequired,
-		children: is.oneOfType([is.arrayOf(is.object), is.object]).isRequired,
+		children: is.oneOfType([is.arrayOf(is.func), is.func]).isRequired,
 	};
 
 	state = {data: Immutable.fromJS({ activeTab: 0 })}
@@ -46,10 +46,8 @@ class Tabs extends ReactComponent{
 			)
 		}
 
-		let child = (this.props.children) ? React.cloneElement(
-			this.props.children[activeTab] || this.props.children, 
-			(this.props.childProps) ? this.props.childProps[activeTab] || this.props.childProps : null
-		) : null;		
+		let Child = this.props.children ? this.props.children[activeTab] || this.props.children : null;
+		let childProps = this.props.childProps ? this.props.childProps[activeTab] || this.props.childProps : {};
 
 		return(
 			<div>
@@ -59,7 +57,7 @@ class Tabs extends ReactComponent{
 
 				<div className="tab-content">
 					<br/>
-					{child}
+					<Child  {...childProps}/>
 				</div>			
 			</div>
 		);

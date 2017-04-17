@@ -1,7 +1,9 @@
-v1.1.2
+v1.1.3
 
-04/16/17
+04/17/17
 
 Description: Using React Router 4. App.js renders router, MainContainer connects to redux store and routes state.
 
-Update: Authenticate Get requests, signup and logout enebled.
+Update: Switched to asynchronous authentication. Made tabs avoid unecessary render. Cleaned up some other stuff.
+
+ToDo: Implement Jest testing. Implement server side rendering or pre-written templates to render a basic page before React renders on the client.

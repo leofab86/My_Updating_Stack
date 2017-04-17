@@ -6,15 +6,17 @@ import thunk from 'redux-thunk';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
 
 import { newSession } from './actions/reduxActions';
+import { authenticate } from './actions/authActions';
 import { errorHandler } from './helpers/appHelpers';
 import {AUTH, AUTH_CLEAR, POPUP, DATA_GET, DATA_ADD} from './actions/constants';
+import STContainer from './stateTracker/STContainer';
 import MainContainer from './containers/mainContainer';
 import Stateful from './components/test/stateful';
 import Functional from './components/test/functional';
 import ReduxContainer from './components/test/reduxContainer';
 import Login from './components/login';
 
-const { reduxDevtools } = window.CONFIG;
+const { reduxDevtools, stateTracker } = window.CONFIG;
 
 
 const mainReducer = combineReducers({
@@ -81,24 +83,32 @@ if (reduxDevtools) {
 
 
 export function renderApp() {
-	//Authenticate and get resources here?
+	//Authenticate and get resources here
 	if(window.express.errors) errorHandler(window.express.errors);
-	store.dispatch(newSession(window.express.session));
-
+	
+	authenticate(function(user){
+		store.dispatch(newSession(user))
+	}); 
 
 	return (
 		<Provider store={store} key="provider">
-			<Router>
-				<Switch>
-					<MainContainer exact path='/' component={Functional}/>
-					<MainContainer exact path='/stateful' component={Stateful}/>
-					<MainContainer path='/stateful/:param' component={Stateful}/>
-					<MainContainer path='/redux' component={ReduxContainer}/>
-					<MainContainer path='/login' component={Login}/>
-				</Switch>
-			</Router>
+			<div>
+				{ stateTracker ? <STContainer /> : null }
+				<Router>
+					<Switch>
+						<MainContainer exact path='/' component={Functional}/>
+						<MainContainer exact path='/stateful' component={Stateful}/>
+						<MainContainer path='/stateful/:param' component={Stateful}/>
+						<MainContainer path='/redux' component={ReduxContainer}/>
+						<MainContainer path='/login' component={Login}/>
+					</Switch>
+				</Router>
+			</div>
 		</Provider>
 	);
+
+
+	
 }
 
 

@@ -8,12 +8,11 @@
 	</head>
 	
 	<body>
-		<div id='app'></div>
+		<div id='app'>LET REACT SERVER RENDER INTO HERE</div>
 		
 		<script>
 			window.CONFIG = <%- config %>;
 			window.express = {};
-			window.express.session = <%- session %>
 			<% if(errors) { %>
 				window.express.errors = <%- errors %>
 			<% } %>

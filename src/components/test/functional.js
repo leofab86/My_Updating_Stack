@@ -9,6 +9,7 @@ import Tabs from '../common/tabs';
 
 const { ReactComponent } = window.CONFIG;
 
+
 function Functional (props) {
 	console.log(props);
 	function click () {
@@ -35,12 +36,12 @@ function Functional (props) {
 			<h1>I am a functional Component</h1>
 			<button onClick={click}>Test Ajax</button>
 			<br/><br/>
+
 			<button onClick={navigate}>Navigate</button>
-			<br/>
-			<br/>
-			<br/>
-			<Tabs activeTab='1' tabs={['Login', 'Sign Up']} >
-				<Tab_HOC />
+			<br/><br/><br/>
+
+			<Tabs activeTab='1' tabs={tabs} >
+				{childrenArray}
 			</Tabs>
 		</div>
 	)
@@ -56,5 +57,9 @@ function Tab (props) {
 	)
 }
 
-const Tab_HOC = chainHOC(Tab, ['pureComponentPP', 'stateTrackerII'])
+//Need to define these to pass to Tabs to avoid re-rendering;
+const Tab_HOC = chainHOC(Tab, ['pureComponentPP', 'stateTrackerII']);
+
+const tabs = ['Login', 'Sign Up'];
+const childrenArray = [Tab_HOC, Tab_HOC];
 

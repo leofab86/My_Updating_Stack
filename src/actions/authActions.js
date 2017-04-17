@@ -7,34 +7,25 @@ import { toastrMsg, errorHandler } from '../helpers/appHelpers';
 const { ajaxLogging } = window.CONFIG;
 
 
-export function authenticate (authTokens, callback) {
-	// const authHeaders = (authTokens) ? authTokens : cookie.load('authHeaders');
-	// if(!authHeaders) return callback();
-	// ajax.get('/auth/validate_token', authHeaders)
-	// .then( argumentArray => {
-	// 	const xhr = argumentArray[2];
-	// 	const user = {...argumentArray[0].data, isSignedIn: true};
-	// 	callback(user)
-	// }).catch( e => {
-	// 	console.error(e);
-	// 	cookie.remove('authHeaders', { path: '/' });
-	// 	callback({isSignedIn: false})
-	// })
+export function authenticate (callback) {
+	ajax.get('/api/authenticate').then( session => {
+		callback(session);
+	}).catch( e => errorHandler(e) )
 }
 
 
 export function signup ({name, email, username, password}, callback) {
-	ajax.post('/api/signup', {name, email, username, password}).then( user => {
-		if (callback) callback(user);
-		if (!callback) console.log('No Signup Callback, wasted ', user);
+	ajax.post('/api/signup', {name, email, username, password}).then( session => {
+		if (callback) callback(session);
+		if (!callback) console.log('No Signup Callback, wasted ', session);
 	}).catch( e => errorHandler(e) )
 }
 
 
 export function login ({username, password}, callback){
-	ajax.post('/api/login', {username, password}).then( user => {
-		if (callback) callback(user);
-		if (!callback) console.log('No Login Callback, wasted ', user);
+	ajax.post('/api/login', {username, password}).then( session => {
+		if (callback) callback(session);
+		if (!callback) console.log('No Login Callback, wasted ', session);
 	}).catch( e => errorHandler(e) )
 }
 

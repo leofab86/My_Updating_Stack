@@ -1,5 +1,4 @@
 import React from 'react';
-import cookie from 'react-cookie';
 import activeComponentStore from './activeComponentStore';
 
 class StateTracker extends React.Component{
@@ -58,8 +57,9 @@ class StateTracker extends React.Component{
 					if(this.state._expanded.includes(id)) {wrapper = ''; expand = '|'}
 					if (index === 'children') {
 						state = state.map(function(mapState, mapIndex) {
+							if(typeof mapState == 'function') { return mapState }
 							return {constructor: (mapState.type.__proto__.prototype) ? mapState.type.__proto__.prototype.constructor : mapState.type.name}
-						})
+						}, this)
 					}					
 					
 					return (
@@ -139,14 +139,14 @@ class StateTracker extends React.Component{
 						<li 
 							title={title} 
 							key={id}
-							><span>{state.displayName}:{trimState}</span>
+							><span>{state.displayName}:  {trimState}</span>
 						</li>
 				} else {
 					listItem =
 						<li 
 							title={title} 
 							key={id}
-							><span>{index} --> {state.displayName}:{trimState}</span>
+							><span>{index} --> {state.displayName}:  {trimState}</span>
 						</li>
 				}
 				return(listItem)

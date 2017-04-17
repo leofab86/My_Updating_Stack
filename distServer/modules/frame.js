@@ -18,6 +18,8 @@ const frameUrl = `http://127.0.0.1:${_config2.default.framePort}/api`;
 
 function authenticate(req, res, callback) {
 
+	if (!req.cookies.authHeader) callback(createSession(undefined));
+
 	const options = {
 		"method": 'GET',
 		"url": `${frameUrl}/users/my`,
@@ -29,7 +31,7 @@ function authenticate(req, res, callback) {
 	(0, _request2.default)(options, (err, httpResponse, body) => {
 		if (err) {
 			console.error(err);
-			return callback(createSession(null), err);
+			return callback(createSession(undefined), err);
 		}
 
 		callback(createSession(JSON.parse(body), req.cookies.authHeader));
@@ -112,22 +114,27 @@ const frameModule = app => {
 
 	app.get('/api/authenticate', (req, res) => {
 
-		authenticate(req, res, function (session) {
+		authenticate(req, res, function (session, err) {
+			if (err) {
+				console.error(err);
+				return res.send(err);
+			}
 			res.send(session);
 		});
 	});
 
-	app.use(function authenticateGetRequests(req, res, next) {
-		if (req.method === 'GET') {
-			console.log('authenticating this GET request');
+	// app.use(function authenticateGetRequests (req, res, next) {
+	// 	if (req.method === 'GET') {
+	// 		console.log('authenticating this GET request');
 
-			authenticate(req, res, function (session, err) {
-				if (err) res.locals.errors = [err];
-				res.locals.session = JSON.stringify(session);
-				next();
-			});
-		} else next();
-	});
+	// 		authenticate(req, res, function(session, err) {
+	// 			if(err) res.locals.errors = [err];
+	// 			res.locals.session = JSON.stringify(session);
+	// 			next()
+	// 		})
+
+	// 	} else next();
+	// });
 };
 
 frameModule.authenticate = authenticate;

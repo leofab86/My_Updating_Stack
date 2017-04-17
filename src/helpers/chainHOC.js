@@ -19,7 +19,11 @@ export default function(baseComponent, HOCarray) {
 
 
 		HOCchain = HOCarray.reduce((accumulator, currentValue, index, array) => {
+			if(typeof currentValue === 'function') return currentValue(accumulator);
 			if(HOCbox[currentValue] === null) return accumulator;
+			if(currentValue.substring(0,3) === 'x__') {
+				return accumulator;
+			}
 			if(!HOCbox[currentValue]) {
 				console.warn(`${currentValue} not found in HOCbox. From ${baseComponent.name || baseComponent.displayName}`)
 				return accumulator;

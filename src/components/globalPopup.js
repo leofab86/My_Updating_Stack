@@ -1,8 +1,9 @@
 import React from 'react';
 import is from 'prop-types';
 
-const { ReactComponent } = window.CONFIG;
 import chainHOC from '../helpers/chainHOC';
+
+const { ReactComponent } = window.CONFIG;
 
 
 class GlobalPopup extends ReactComponent{

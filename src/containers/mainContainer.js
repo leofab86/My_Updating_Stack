@@ -5,10 +5,9 @@ import { Route } from 'react-router-dom';
 import * as AppActions from '../actions/reduxActions';
 import Header from '../components/header';
 import GlobalPopup from '../components/globalPopup';
-import StateTracker from '../stateTracker/stateTracker';
 import chainHOC from '../helpers/chainHOC';
 
-const { ReactComponent, stateTracker } = window.CONFIG;
+const { ReactComponent } = window.CONFIG;
 
 
 const mapStateToProps = (appState) => {
@@ -56,8 +55,7 @@ class ViewContainer extends ReactComponent {
 
 		return (
 			<Route {...rest} render={routeProps => 
-				<div>
-					{ stateTracker ? <StateTracker appState={{...this.props.appState}}/> : null }
+				<div>			
 					<Header {...{isSignedIn, user_name, asyncLogout, newPopup, closePopup}}/>
 					<div className='container'>
 						<Component {...routeProps} {...stateRouter[componentName]()}/>
