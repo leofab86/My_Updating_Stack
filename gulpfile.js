@@ -47,10 +47,7 @@ gulp.task('serve', ['js', 'babelify', 'lintserver'], function() {
 
 gulp.task('babelify', function() {
 	return gulp.src(config.paths.srcServerjs)
-		.pipe(babel({
-			presets: ["node6", "stage-0"],
-			plugins: ["transform-object-rest-spread"]
-		}))
+		.pipe(babel())
 		.pipe(gulp.dest(config.paths.distServer));
 });
 
@@ -119,7 +116,7 @@ gulp.task('js', function () {
 			entries: config.paths.mainJs,
 			debug: true
 		})
-		.transform("babelify", {presets: ["node6", "react", "stage-0"]}, {plugins: ["transform-object-rest-spread"]})
+		.transform("babelify")
 		.bundle()
 		.on('error', console.error.bind(console))
 		.pipe(source('bundle.js'))

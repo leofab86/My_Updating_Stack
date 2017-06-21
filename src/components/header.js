@@ -24,7 +24,7 @@ class Header extends ReactComponent{
 			label: '',
 			component: Login,
 			componentProps: {
-				loginCallback: () => this.props.closePopup(),
+				loginCallback: this.props.closePopup,
 			}
 		})
 	}

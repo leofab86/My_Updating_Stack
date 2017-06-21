@@ -5,18 +5,23 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
 
-import { newSession } from './actions/reduxActions';
+import { newSession, asyncAuthenticate } from './actions/reduxActions';
 import { authenticate } from './actions/authActions';
 import { errorHandler } from './helpers/appHelpers';
 import {AUTH, AUTH_CLEAR, POPUP, DATA_GET, DATA_ADD} from './actions/constants';
-import STContainer from './stateTracker/STContainer';
 import MainContainer from './containers/mainContainer';
 import Stateful from './components/test/stateful';
 import Functional from './components/test/functional';
 import ReduxContainer from './components/test/reduxContainer';
 import Login from './components/login';
+import { setConfig, STContainer, decoratorsConfig } from 'my_decorators';
 
-const { reduxDevtools, stateTracker } = window.CONFIG;
+setConfig({
+	stateTracker: false,
+	updateReports: { mount: false, update: false, pass: false, render: true }
+});
+
+const { reduxDevtools } = window.CONFIG;
 
 
 const mainReducer = combineReducers({
@@ -86,21 +91,21 @@ export function renderApp() {
 	//Authenticate and get resources here
 	if(window.express.errors) errorHandler(window.express.errors);
 	
-	authenticate(function(user){
+	authenticate(user =>{
 		store.dispatch(newSession(user))
-	}); 
+	})
 
 	return (
 		<Provider store={store} key="provider">
 			<div>
-				{ stateTracker ? <STContainer /> : null }
+				{ decoratorsConfig.stateTracker && <STContainer /> }
 				<Router>
 					<Switch>
-						<MainContainer exact path='/' component={Functional}/>
-						<MainContainer exact path='/stateful' component={Stateful}/>
-						<MainContainer path='/stateful/:param' component={Stateful}/>
-						<MainContainer path='/redux' component={ReduxContainer}/>
-						<MainContainer path='/login' component={Login}/>
+						<MainContainer exact path='/' Component={Functional}/>
+						<MainContainer exact path='/stateful' Component={Stateful}/>
+						<MainContainer path='/stateful/:param' Component={Stateful}/>
+						<MainContainer path='/redux' Component={ReduxContainer}/>
+						<MainContainer path='/login' Component={Login}/>
 					</Switch>
 				</Router>
 			</div>

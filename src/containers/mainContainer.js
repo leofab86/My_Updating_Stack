@@ -7,6 +7,8 @@ import Header from '../components/header';
 import GlobalPopup from '../components/globalPopup';
 import chainHOC from '../helpers/chainHOC';
 
+import { updateReporterII, stateTrackerII } from 'my_decorators';
+
 const { ReactComponent } = window.CONFIG;
 
 
@@ -24,11 +26,13 @@ const mapDispatchToProps = (dispatch) => {
 	}
 	return {dispatcher}
 }
-
+@updateReporterII
+@stateTrackerII
 class ViewContainer extends ReactComponent {
 	
 	render(){
-		const { component: Component, dispatcher, appState, ...rest } = this.props;
+		console.log('render');
+		const { Component, dispatcher, appState, ...rest } = this.props;
 
 		//Destructure all dispatchable redux functions that components need to use
 		const { newPopup, closePopup, asyncSignup, asyncLogin, asyncLogout 
@@ -70,7 +74,7 @@ class ViewContainer extends ReactComponent {
 const MainContainer = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(chainHOC(ViewContainer, ['updateReporterII', 'stateTrackerII']))
+)(ViewContainer)
 
 MainContainer.displayName = 'MainContainer';
 

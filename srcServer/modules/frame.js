@@ -7,7 +7,8 @@ const frameUrl = `http://127.0.0.1:${config.framePort}/api`;
 
 function authenticate (req, res, callback) {
 
-	if(!req.cookies.authHeader) callback(createSession(undefined));
+
+	if(!req.cookies.authHeader) return callback(createSession(undefined));
 	
 	const options = {
 		"method": 'GET',
@@ -107,7 +108,6 @@ const frameModule = (app) => {
 
 
 	app.get('/api/authenticate', (req, res) => {
-		
 		authenticate(req, res, function(session, err){
 			if(err) {
 				console.error(err);
