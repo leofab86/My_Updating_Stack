@@ -2,8 +2,6 @@ import React from 'react';
 import is from 'prop-types';
 import Immutable from 'immutable';
 
-import chainHOC from '../../helpers/chainHOC';
-
 const {ReactComponent} = window.CONFIG;
 
 
@@ -65,5 +63,5 @@ class Tabs extends ReactComponent{
 }
 
 
-export default chainHOC(Tabs, ['stateTrackerII', 'updateReporterII']);
+export default Tabs
 

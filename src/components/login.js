@@ -2,7 +2,6 @@ import React from 'react';
 import is from 'prop-types';
 
 import TextInput from './common/textInput';
-import chainHOC from '../helpers/chainHOC';
 
 const { ReactComponent } = window.CONFIG;
 
@@ -79,5 +78,5 @@ class Login extends ReactComponent {
 	}
 }
 
-export default chainHOC(Login, ['stateTrackerII']);
+export default Login
 

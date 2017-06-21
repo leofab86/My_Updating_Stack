@@ -2,12 +2,13 @@ import React from 'react';
 
 import cookie from 'react-cookie';
 import ajax from '../../helpers/ajax';
-import chainHOC from '../../helpers/chainHOC';
+import { updateReporterII } from 'my_decorators'
 
 const {ReactComponent} = window.CONFIG;
 
-class Stateful extends ReactComponent {
 
+@updateReporterII
+class Stateful extends ReactComponent {
 
 	constructor (props) {
 		super();	
@@ -23,10 +24,8 @@ class Stateful extends ReactComponent {
 			</div>
 		)
 
-
-
 	}
 }
 
 
-export default chainHOC(Stateful, ['stateTrackerII', 'updateReporterII']);
+export default Stateful

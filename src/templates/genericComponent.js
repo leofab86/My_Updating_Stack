@@ -1,7 +1,6 @@
 import React from 'react';
 import is from 'prop-types';
 
-import chainHOC from '../helpers/chainHOC';
 
 const { ReactComponent } = window.CONFIG;
 
@@ -22,7 +21,7 @@ function GenericComponent (props) {
 	)
 }
 
-export default chainHOC(GenericComponent, ['updateReporterPP']);
+export default GenericComponent;
 
 
 // class GenericComponent extends ReactComponent{

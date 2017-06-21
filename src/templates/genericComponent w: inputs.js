@@ -2,7 +2,6 @@ import React from 'react';
 import is from 'prop-types';
 
 import TextInput from './common/textInput';
-import chainHOC from '../helpers/chainHOC';
 
 const { ReactComponent } = window.CONFIG;
 
@@ -65,5 +64,5 @@ class COMPONENTNAME extends ReactComponent {
 	}
 }
 
-export default chainHOC(COMPONENTNAME, ['stateTrackerII', 'updateReporterII']);
+export default COMPONENTNAME
 

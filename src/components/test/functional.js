@@ -4,11 +4,10 @@ import { BrowserHistory } from 'react-router-dom';
 
 import ajax from '../../helpers/ajax';
 import { errorHandler } from '../../helpers/appHelpers';
-import chainHOC from '../../helpers/chainHOC';
 import Tabs from '../common/tabs';
+import { updateReporterPP } from 'my_decorators'
 
 const { ReactComponent } = window.CONFIG;
-
 
 function Functional (props) {
 	console.log(props);
@@ -47,7 +46,7 @@ function Functional (props) {
 	)
 }
 
-export default chainHOC(Functional, ['updateReporterPP', 'stateTrackerII']);
+export default updateReporterPP(Functional);
 
 
 function Tab (props) {
@@ -58,8 +57,7 @@ function Tab (props) {
 }
 
 //Need to define these to pass to Tabs to avoid re-rendering;
-const Tab_HOC = chainHOC(Tab, ['pureComponentPP', 'stateTrackerII']);
 
 const tabs = ['Login', 'Sign Up'];
-const childrenArray = [Tab_HOC, Tab_HOC];
+const childrenArray = [Tab, Tab];
 

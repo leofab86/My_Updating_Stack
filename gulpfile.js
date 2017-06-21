@@ -12,6 +12,9 @@ var gls = require('gulp-live-server');
 var exec = require('child_process').exec;
 
 var config = require('./config');
+var paths = config.paths;
+var port = config.port;
+var devBaseUrl = config.devBaseUrl;
 
 
 gulp.task('default', ['devserver']);
@@ -19,7 +22,7 @@ gulp.task('default', ['devserver']);
 // ------------------------ DEVSERVER --------------------------
 // --------------------------------------------------------------
 
-gulp.task('devserver', ['frame', 'lint', 'html', 'css', 'openServer']);
+gulp.task('devserver', ['frame', 'lint', 'serverHtml', 'css', 'openServer']);
 
 gulp.task('frame', function (){
 	exec('node server.js', {
@@ -34,49 +37,55 @@ gulp.task('frame', function (){
 
 gulp.task('openServer', ['serve'], function () {
 	gulp.src('dist/index.html')
-		.pipe(open({ uri: config.devBaseUrl + ':' + config.port + '/'}));
+		.pipe(open({ uri: devBaseUrl + ':' + port + '/'}));
 });
 
 
 gulp.task('serve', ['js', 'babelify', 'lintserver'], function() {
-	var server = gls.new(['--inspect', config.paths.distServerMain]);
+	var server = gls.new(['--inspect', paths.distServerMain]);
 	server.start();
 
 	watchServer(server);
 });
 
 gulp.task('babelify', function() {
-	return gulp.src(config.paths.srcServerjs)
+	return gulp.src(paths.srcServerjs)
 		.pipe(babel())
-		.pipe(gulp.dest(config.paths.distServer));
+		.pipe(gulp.dest(paths.distServer));
 });
 
 gulp.task('lintserver', function(){
-	return gulp.src(config.paths.srcServerjs)
+	return gulp.src(paths.srcServerjs)
 		.pipe(eslint())
 		.pipe(eslint.format())
+});
+
+gulp.task('serverHtml', function() {
+	gulp.src(paths.serverHtml)
+		.pipe(gulp.dest(paths.dist))
+		.pipe(connect.reload())
 });
 
 function watchServer (server) {
 	var file;
 
-	gulp.watch(config.paths.srcServerjs, ['babelify', 'lintserver', function() {
+	gulp.watch(paths.srcServerjs, ['babelify', 'lintserver', function() {
 		server.start.bind(server)();		
 	}])
 
-	gulp.watch(config.paths.html, ['html', function() {
+	gulp.watch(paths.serverHtml, ['serverHtml', function() {
 		server.notify.bind(server)(file);		
 	}]).on('change', function(event) {
 		file = event;
 	})
 
-	gulp.watch(config.paths.js, ['js', 'lint', function() {
+	gulp.watch(paths.js, ['js', 'lint', function() {
 		server.notify.bind(server)(file);		
 	}]).on('change', function(event) {
 		file = event;
 	})
 
-	gulp.watch(config.paths.css, ['css', function() {
+	gulp.watch(paths.css, ['css', function() {
 		server.notify.bind(server)(file);		
 	}]).on('change', function(event) {
 		file = event;
@@ -87,59 +96,59 @@ function watchServer (server) {
 // ------------------------------------ FRONT END ----------------------------------------
 // ----------------------------------------------------------------------------------------
 
-gulp.task('frontend', ['html', 'js', 'css', 'lint', 'open', 'watch']);
+gulp.task('frontend', ['frontendHtml', 'js', 'css', 'lint', 'open', 'watch']);
 
 
 //Start a local development server
 gulp.task('connect', function () {
 	connect.server({
 		root: ['dist'],
-		port: config.port,
-		base: config.devBaseUrl,
+		port: port,
+		base: devBaseUrl,
 		livereload: true
 	});
 });
 
 gulp.task('open', ['connect'], function () {
-	gulp.src('dist/index.html')
-		.pipe(open({ uri: config.devBaseUrl + ':' + config.port + '/'}));
+	gulp.src('')
+		.pipe(open({ uri: devBaseUrl + ':' + port + '/'}));
 });
 
-gulp.task('html', function() {
-	gulp.src(config.paths.html)
-		.pipe(gulp.dest(config.paths.dist))
+gulp.task('frontendHtml', function() {
+	gulp.src(paths.frontendHtml)
+		.pipe(gulp.dest(paths.dist))
 		.pipe(connect.reload())
 });
 
 gulp.task('js', function () {
 	return browserify({
-			entries: config.paths.mainJs,
+			entries: paths.mainJs,
 			debug: true
 		})
 		.transform("babelify")
 		.bundle()
 		.on('error', console.error.bind(console))
 		.pipe(source('bundle.js'))
-		.pipe(gulp.dest(config.paths.dist + '/scripts'))
+		.pipe(gulp.dest(paths.dist + '/scripts'))
 		.pipe(connect.reload())	
 });
 
 gulp.task('css', function() {
-	return gulp.src(config.paths.css)
+	return gulp.src(paths.css)
 		.pipe(concat('bundle.css'))
-		.pipe(gulp.dest(config.paths.dist + '/css'))
+		.pipe(gulp.dest(paths.dist + '/css'))
 		.pipe(connect.reload())
 });
 
 
 gulp.task('lint', function() {
-	return gulp.src(config.paths.js)
+	return gulp.src(paths.js)
 		.pipe(eslint())
 		.pipe(eslint.format())
 });
 
 gulp.task('watch', function () {
-	gulp.watch(config.paths.html, ['html'])
-	gulp.watch(config.paths.js, ['html'])
-	gulp.watch(config.paths.css, ['css'])
+	gulp.watch(paths.frontendHtml, ['frontendHtml'])
+	gulp.watch(paths.js, ['js'])
+	gulp.watch(paths.css, ['css'])
 });

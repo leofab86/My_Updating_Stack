@@ -2,8 +2,8 @@ import React from 'react';
 import is from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import chainHOC from '../helpers/chainHOC';
 import Login from './login';
+
 
 const { ReactComponent, debugging } = window.CONFIG;
 
@@ -105,7 +105,7 @@ class Header extends ReactComponent{
 	}
 }
 
-export default chainHOC(Header, ['updateReporterII', 'stateTrackerII']);
+export default Header
 
 
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import is from 'prop-types';
 
-import chainHOC from '../helpers/chainHOC';
 
 const { ReactComponent } = window.CONFIG;
 
@@ -51,5 +50,5 @@ class GlobalPopup extends ReactComponent{
 	}
 }
 
-export default chainHOC(GlobalPopup, ['updateReporterII', 'stateTrackerII']);
+export default GlobalPopup
 

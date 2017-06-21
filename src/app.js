@@ -14,10 +14,10 @@ import Stateful from './components/test/stateful';
 import Functional from './components/test/functional';
 import ReduxContainer from './components/test/reduxContainer';
 import Login from './components/login';
-import { setConfig, STContainer, decoratorsConfig } from 'my_decorators';
+import { setConfig, STContainer, myDecoratorsConfig } from 'my_decorators';
 
 setConfig({
-	stateTracker: false,
+	stateTracker: true,
 	updateReports: { mount: false, update: false, pass: false, render: true }
 });
 
@@ -89,7 +89,7 @@ if (reduxDevtools) {
 
 export function renderApp() {
 	//Authenticate and get resources here
-	if(window.express.errors) errorHandler(window.express.errors);
+	if(window.express && window.express.errors) errorHandler(window.express.errors);
 	
 	authenticate(user =>{
 		store.dispatch(newSession(user))
@@ -98,7 +98,7 @@ export function renderApp() {
 	return (
 		<Provider store={store} key="provider">
 			<div>
-				{ decoratorsConfig.stateTracker && <STContainer /> }
+				{ myDecoratorsConfig.stateTracker && <STContainer /> }
 				<Router>
 					<Switch>
 						<MainContainer exact path='/' Component={Functional}/>

@@ -5,9 +5,8 @@ import { Route } from 'react-router-dom';
 import * as AppActions from '../actions/reduxActions';
 import Header from '../components/header';
 import GlobalPopup from '../components/globalPopup';
-import chainHOC from '../helpers/chainHOC';
 
-import { updateReporterII, stateTrackerII } from 'my_decorators';
+//import { updateReporterII, stateTrackerII } from 'my_decorators';
 
 const { ReactComponent } = window.CONFIG;
 
@@ -26,8 +25,10 @@ const mapDispatchToProps = (dispatch) => {
 	}
 	return {dispatcher}
 }
-@updateReporterII
-@stateTrackerII
+
+
+// @updateReporterII
+// @stateTrackerII
 class ViewContainer extends ReactComponent {
 	
 	render(){

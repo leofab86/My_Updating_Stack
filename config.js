@@ -9,7 +9,8 @@ module.exports = {
 		srcServerjs: './srcServer/**/*.js',
 		distServer: './distServer',
 		distServerMain: './distServer/server.js',
-		html: './src/*.html',
+		serverHtml: './src/index.html',
+		frontendHtml: './src/frontend/index.html',
 		mainJs: './src/main.js',
 		js: ['./src/**/*.js', './config.js'],
 		css: [
