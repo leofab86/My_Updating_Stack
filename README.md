@@ -1,10 +1,8 @@
-v1.1.4
-
-04/17/17
+my_decorators v1.1.5
 
 Description: Using React Router 4. App.js renders router, MainContainer connects to redux store and routes state.
 
-Update: Added decorators
+Update: Untracked dist. Changed gulp and added frontend index.html to be able to run frontend build
 
 ToDo: 
 Implement Jest testing. 

@@ -17,8 +17,8 @@ import Login from './components/login';
 import { setConfig, STContainer, myDecoratorsConfig } from 'my_decorators';
 
 setConfig({
-	stateTracker: true,
-	updateReports: { mount: false, update: false, pass: false, render: true }
+	showStateTracker: true,
+	updateReports: { mount: false, update: false, pass: false, render: false }
 });
 
 const { reduxDevtools } = window.CONFIG;
@@ -98,7 +98,7 @@ export function renderApp() {
 	return (
 		<Provider store={store} key="provider">
 			<div>
-				{ myDecoratorsConfig.stateTracker && <STContainer /> }
+				{ myDecoratorsConfig.showStateTracker && <STContainer /> }
 				<Router>
 					<Switch>
 						<MainContainer exact path='/' Component={Functional}/>

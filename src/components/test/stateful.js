@@ -2,16 +2,20 @@ import React from 'react';
 
 import cookie from 'react-cookie';
 import ajax from '../../helpers/ajax';
-import { updateReporterII } from 'my_decorators'
+import { updateReporterII, stateTrackerII } from 'my_decorators'
 
 const {ReactComponent} = window.CONFIG;
 
-
+@stateTrackerII
 @updateReporterII
 class Stateful extends ReactComponent {
 
 	constructor (props) {
 		super();	
+	}
+
+	state = {
+		key: 'value'
 	}
 
 	render() {
