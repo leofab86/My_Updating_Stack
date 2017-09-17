@@ -2,10 +2,9 @@ import React from 'react';
 import is from 'prop-types';
 import Immutable from 'immutable';
 
-const {ReactComponent} = window.CONFIG;
 
 
-class Tabs extends ReactComponent{
+class Tabs extends React.PureComponent{
 	static propTypes = {
 		activeTab: is.oneOfType([is.string, is.number]).isRequired,
 		tabs: is.array.isRequired,

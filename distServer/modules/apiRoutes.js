@@ -12,20 +12,18 @@ var _frame = require('./frame');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-module.exports = app => {
+module.exports = function (app) {
 
-	app.route('/api/posts').post(_bodyParser2.default.urlencoded({ extended: true }), (req, res) => {
-		console.log(req.body);
-		const post = new _Post2.default(req.body);
+	app.route('/api/posts').post(_bodyParser2.default.json(), function (req, res) {
+		var post = new _Post2.default(req.body);
 		post.save(function (err, data) {
 			if (err) {
-				console.log(err);
+				console.error(err);
 				res.status(400).send(err);
 			}
-			console.log(data);
 			res.send(data);
 		});
-	}).get((req, res) => {
+	}).get(function (req, res) {
 		_Post2.default.find(function (error, data) {
 			res.send(data);
 		});
@@ -51,3 +49,4 @@ module.exports = app => {
 	// 	})
 	// })
 };
+//# sourceMappingURL=apiRoutes.js.map

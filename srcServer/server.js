@@ -23,7 +23,7 @@ app.set('views', __dirname + '/../dist')
 
 require('./database.js');
 
-app.use('/virtualPath', express.static(__dirname + '/../dist'));
+app.use(express.static(__dirname + '/../dist'));
 
 require('./modules/apiRoutes')(app);
 require('./modules/frame')(app);

@@ -13,3 +13,4 @@ _mongoose2.default.connect('mongodb://localhost/template', function (err, db) {
         console.log('Connected to Server successfully!');
     }
 });
+//# sourceMappingURL=database.js.map

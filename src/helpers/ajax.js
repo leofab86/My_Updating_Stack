@@ -1,5 +1,4 @@
-//JQuery loaded by rails?? or another module?...
-const { ajaxLogging } = window.CONFIG;
+import 'jquery'
 
 function generateMethod (type) {
 	return (url, data, headers) => {
@@ -10,11 +9,11 @@ function generateMethod (type) {
 				headers,
 				data,
 				success: function (data, status, xhr) {
-					if(ajaxLogging) console.log(arguments);
+					console.log('AJAX LOGGING: ' + arguments);
 					success(data);
 				},
 				error: function(e) {
-					if(ajaxLogging) console.log(arguments);
+					console.log('AJAX LOGGING: ' + arguments);
 					error(e);
 				}
 			})

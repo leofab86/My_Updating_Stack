@@ -1,22 +1,16 @@
+import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux';
 
-import * as AppActions from '../../actions/reduxActions';
 import StatefulComponent from './stateful';
 
 
-const mapStateToProps = ({auth, data, globalPopup}) => {
-  return auth
+const mapStateToProps = (appState) => {
+  return appState
 }
 
-const mapDispatchToProps = (dispatch) => {
-	let dispatcher = {};
-	for (var key in AppActions) {
-		dispatcher[key] = (param1, param2) => {
-			dispatch(AppActions[key](param1, param2))
-		}
-	}
-	return {dispatcher}
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+
+})
 
 const ReduxContainer = connect(
   mapStateToProps,

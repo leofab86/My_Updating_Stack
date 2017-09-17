@@ -1,10 +1,8 @@
 import React from 'react';
 import is from 'prop-types';
 
-const {ReactComponent} = window.CONFIG;
 
-
-class Input extends ReactComponent{
+class Input extends React.PureComponent{
 	static propTypes = {
 		name: is.string.isRequired,
 		label: is.string,

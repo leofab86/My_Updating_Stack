@@ -1,6 +1,5 @@
 
 module.exports = {
-	framePort: 9000,
 	port: 9005,
 	devBaseUrl: 'http://localhost',
 	paths: {
@@ -9,8 +8,7 @@ module.exports = {
 		srcServerjs: './srcServer/**/*.js',
 		distServer: './distServer',
 		distServerMain: './distServer/server.js',
-		serverHtml: './src/index.html',
-		frontendHtml: './src/frontend/index.html',
+		srcHtml: './src/index.html',
 		mainJs: './src/main.js',
 		js: ['./src/**/*.js', './config.js'],
 		css: [
@@ -22,16 +20,6 @@ module.exports = {
 		dist: './dist'
 		
 	},
-
-	clientConfig: {
-		ReactComponent: require('react').PureComponent,
-		debugging: true,
-		reduxDevtools: false,
-		stateTracker: true,
-		updateReports: { update: true, pass: false },
-		ajaxLogging: true
-	},
-
 	
 
 

@@ -5,24 +5,29 @@ import { BrowserHistory } from 'react-router-dom';
 import ajax from '../../helpers/ajax';
 import { errorHandler } from '../../helpers/appHelpers';
 import Tabs from '../common/tabs';
-import { updateReporterPP } from 'my_decorators'
 
-const { ReactComponent } = window.CONFIG;
 
 function Functional (props) {
 	console.log(props);
+
 	function click () {
-		$.ajax({
-			url: '/api/users',
-			type: 'GET',
-			headers: cookie.load('authHeaders'),
-			success: function (param1, param2, param3) {
-				console.log(arguments)
-			},
-			error: function(e) {
-				console.log(arguments);
-			}
-		})
+		fetch('api/posts', {
+		  method: 'post',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+		    title: 'test Post',
+        author: 'Leo test',
+        body: 'this is a body'
+      })
+    })
+      .then((response)=>{
+        return response.json()
+    })
+      .then((json)=>{
+		    console.log(json)
+      })
 	}
 
 	function navigate () {
@@ -33,7 +38,7 @@ function Functional (props) {
 	return (
 		<div className={grid}>
 			<h1>I am a functional Component</h1>
-			<button onClick={click}>Test Ajax</button>
+			<button onClick={click}>Test Button</button>
 			<br/><br/>
 
 			<button onClick={navigate}>Navigate</button>
@@ -46,7 +51,7 @@ function Functional (props) {
 	)
 }
 
-export default updateReporterPP(Functional);
+export default Functional;
 
 
 function Tab (props) {

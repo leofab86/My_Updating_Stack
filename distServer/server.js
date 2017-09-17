@@ -1,5 +1,9 @@
 'use strict';
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -14,15 +18,15 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const app = (0, _express2.default)();
+var app = (0, _express2.default)();
 
 app.use(function logRequest(req, res, next) {
-	console.log(`${req.method}: ${req.originalUrl}`);
+	console.log(req.method + ': ' + req.originalUrl);
 	next();
 });
 
 //Capture and kill requests
-app.get('/favicon.ico', (req, res) => {
+app.get('/favicon.ico', function (req, res) {
 	res.send();
 });
 //--------------------------
@@ -35,16 +39,17 @@ app.set('views', __dirname + '/../dist');
 
 require('./database.js');
 
-app.use('/virtualPath', _express2.default.static(__dirname + '/../dist'));
+app.use(_express2.default.static(__dirname + '/../dist'));
 
 require('./modules/apiRoutes')(app);
 require('./modules/frame')(app);
 
-app.get('*', (req, res, next) => {
+app.get('*', function (req, res, next) {
 	console.log('catchAll');
-	res.locals.config = JSON.stringify({});
-	res.locals.errors = res.locals.errors ? JSON.stringify(res.locals.errors) : null;
+	res.locals.config = (0, _stringify2.default)({});
+	res.locals.errors = res.locals.errors ? (0, _stringify2.default)(res.locals.errors) : null;
 	res.render('index.html');
 });
 
 app.listen(9005);
+//# sourceMappingURL=server.js.map

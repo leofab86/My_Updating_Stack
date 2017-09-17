@@ -5,16 +5,9 @@ import { Link } from 'react-router-dom';
 import Login from './login';
 
 
-const { ReactComponent, debugging } = window.CONFIG;
 
-
-class Header extends ReactComponent{
+class Header extends React.PureComponent{
 	static propTypes = {
-		isSignedIn: is.bool.isRequired,
-		user_name: is.string,
-		asyncLogout: is.func.isRequired,
-		newPopup: is.func.isRequired,
-		closePopup: is.func.isRequired
 	}
 
 	loginPopup = () => {

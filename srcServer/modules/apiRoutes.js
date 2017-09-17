@@ -6,15 +6,13 @@ import { authenticate } from './frame';
 module.exports = (app) => {
 
 	app.route('/api/posts')
-	.post(bodyParser.urlencoded({extended: true}), (req, res) => {
-		console.log(req.body);
+	.post(bodyParser.json(), (req, res) => {
 		const post = new Post(req.body);
 		post.save(function(err, data){
 			if (err) {
-				console.log(err);
+				console.error(err);
 				res.status(400).send(err);
 			}
-			console.log(data);
 			res.send(data);
 		});	
 		

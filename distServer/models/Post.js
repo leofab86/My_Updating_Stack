@@ -14,14 +14,14 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const PostSchema = {
+var PostSchema = {
 	title: String,
 	body: String,
 	author: String,
 	date: { type: String, default: timeNow }
 };
 
-const Post = _mongoose2.default.model('Post', PostSchema, 'Posts');
+var Post = _mongoose2.default.model('Post', PostSchema, 'Posts');
 
 exports.default = Post;
 
@@ -29,3 +29,4 @@ exports.default = Post;
 function timeNow() {
 	return (0, _moment2.default)().format('MMMM Do YYYY, h:mm:ss a');
 }
+//# sourceMappingURL=Post.js.map

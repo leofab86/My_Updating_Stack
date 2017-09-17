@@ -3,10 +3,9 @@ import is from 'prop-types';
 
 import TextInput from './common/textInput';
 
-const { ReactComponent } = window.CONFIG;
 
 
-class Login extends ReactComponent {
+class Login extends React.PureComponent {
 	static propTypes = {
 		propName: is.oneOfType([is.string, is.number]),
 		asyncLogin: is.func.isRequired,

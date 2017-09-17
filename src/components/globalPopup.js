@@ -2,19 +2,9 @@ import React from 'react';
 import is from 'prop-types';
 
 
-const { ReactComponent } = window.CONFIG;
 
-
-class GlobalPopup extends ReactComponent{
+class GlobalPopup extends React.Component{
 	static propTypes = {
-		component: is.func.isRequired,
-		visible: is.bool.isRequired,
-		wide: is.bool.isRequired,
-		label: is.string,
-		componentProps: is.object,
-		closePopup: is.func.isRequired,
-		asyncLogin: is.func.isRequired,
-		asyncSignup: is.func.isRequired, 
 	};
 
 	render(){
