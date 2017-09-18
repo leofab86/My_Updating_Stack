@@ -1,34 +1,24 @@
 import React from 'react';
-import cookie from 'react-cookie';
 import { BrowserHistory } from 'react-router-dom';
 
-import ajax from '../../helpers/ajax';
-import { errorHandler } from '../../helpers/appHelpers';
 import Tabs from '../common/tabs';
+import {newPost, getPosts} from '../../actions/api'
 
 
 function Functional (props) {
 	console.log(props);
 
-	function click () {
-		fetch('api/posts', {
-		  method: 'post',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-		    title: 'test Post',
-        author: 'Leo test',
-        body: 'this is a body'
-      })
-    })
-      .then((response)=>{
-        return response.json()
-    })
-      .then((json)=>{
-		    console.log(json)
-      })
+  const click = async () => {
+		console.log(await newPost({
+      title: 'async post',
+      author: 'async leo',
+      body: 'async body'
+    }))
 	}
+
+  const click2 = async () => {
+    console.log(await getPosts())
+  }
 
 	function navigate () {
 		props.history.push('/stateful')
@@ -40,6 +30,9 @@ function Functional (props) {
 			<h1>I am a functional Component</h1>
 			<button onClick={click}>Test Button</button>
 			<br/><br/>
+
+      <button onClick={click2}>Test Button 2</button>
+      <br/><br/>
 
 			<button onClick={navigate}>Navigate</button>
 			<br/><br/><br/>

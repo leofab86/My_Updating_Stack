@@ -2,14 +2,12 @@ import React from 'react';
 import is from 'prop-types';
 
 
-const { ReactComponent } = window.CONFIG;
-
 
 GenericComponent.propTypes = {
 	example: is.oneOfType([is.string, is.number])
 }
 
-function GenericComponent (props) {
+export default function GenericComponent (props) {
 
 	function click () {}
 
@@ -21,10 +19,8 @@ function GenericComponent (props) {
 	)
 }
 
-export default GenericComponent;
 
-
-// class GenericComponent extends ReactComponent{
+// export default class GenericComponent extends React.PureComponent{
 //	static propTypes = {}
 
 // 	render() {
@@ -37,5 +33,3 @@ export default GenericComponent;
 // 	}
 // }
 
-
-//export default chainHOC(GenericComponent, ['stateTrackerII', 'updateReporterII']);

@@ -1,19 +1,21 @@
-import 'jquery'
+import $ from 'jquery'
 
 function generateMethod (type) {
-	return (url, data, headers) => {
+	return (url, options) => {
+    if(options && options.body) {
+      options.data = options.body
+    }
 		return new Promise( (success, error) => {
 			$.ajax({
 				url,
 				type,
-				headers,
-				data,
+        ...(options ? options : {}),
 				success: function (data, status, xhr) {
-					console.log('AJAX LOGGING: ' + arguments);
+					console.log('AJAX LOGGING: ', arguments);
 					success(data);
 				},
 				error: function(e) {
-					console.log('AJAX LOGGING: ' + arguments);
+					console.log('AJAX LOGGING: ', arguments);
 					error(e);
 				}
 			})
