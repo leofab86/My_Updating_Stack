@@ -1,22 +1,24 @@
 import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux'
 
-import { asyncEditUser } from '../actions/reduxActions';
-import GenericComponent from './genericComponent';
+import { asyncGetPosts } from '../actions/reduxActions';
+import GenericComponent from './genericDumbComponent';
 
 
 const mapStateToProps = (state) => {
   return state
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return { asyncEditUser: (id, callback) => dispatch( asyncEditUser(id, callback))}
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+	asyncGetPosts: asyncGetPosts
+}, dispatch)
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class GenericContainer {
+
+  render() {
+    return (
+      <GenericComponent/>
+    )
+  }
 }
-
-const ReduxContainer = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(GenericComponent)
-
-ReduxContainer.displayName = 'ReduxContainer';
-
-export default ReduxContainer;

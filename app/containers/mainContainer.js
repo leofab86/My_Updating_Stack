@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 
 import {asyncGetPosts} from '../actions/reduxActions'
 import Header from '../components/header';
-import GlobalPopup from '../components/globalPopup';
+import Modal from '../components/modal';
 
 
 const mapStateToProps = (appState) => {
@@ -17,14 +17,12 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch)
 
 
-
-class ViewContainer extends React.PureComponent {
+@connect(mapStateToProps, mapDispatchToProps)
+export default class MainContainer extends React.PureComponent {
 	
 	render(){
 		const { Component, appState, ...rest } = this.props;
 
-		console.log('AppState: ', appState)
-    console.log('Rest: ', rest)
     const asyncGetPosts = this.props.asyncGetPosts
 
 		const componentName = Component.displayName || Component.name;
@@ -47,19 +45,11 @@ class ViewContainer extends React.PureComponent {
 					<div className='container'>
 						<Component {...routeProps} {...stateRouter[componentName]()}/>
 					</div>
-					<GlobalPopup />
+					<Modal />
 				</div>
 			}/>
 		);
 	}
 }
 
-const MainContainer = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ViewContainer)
-
-MainContainer.displayName = 'MainContainer';
-
-export default MainContainer;
 
