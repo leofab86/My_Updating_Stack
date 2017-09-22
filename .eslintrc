@@ -23,9 +23,5 @@
 		"no-alert": 0,
 		"no-lone-blocks": 0,
 		"no-console": 0
-	},
-	"globals": {
-		jQuery: true,
-		$: true
 	}
 }
