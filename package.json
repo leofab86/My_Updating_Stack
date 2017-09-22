@@ -1,7 +1,7 @@
 {
   "name": "my_updating_stack",
   "version": "1.2.0",
-  "description": "Updated gulp build and node server",
+  "description": "Leo's latest development environment stack",
   "scripts": {
     "gulp": "gulp"
   },
@@ -20,7 +20,6 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "mongoose": "^4.11.11",
-    "my_decorators": "^1.1.0",
     "prop-types": "^15.5.8",
     "react": "^15.6.1",
     "react-cookie": "^1.0.5",

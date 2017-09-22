@@ -19,7 +19,6 @@ var port = config.port;
 var devBaseUrl = config.devBaseUrl;
 
 
-
 var packageJson = require('./package.json')
 var dependencies = Object.keys(packageJson.dependencies)
 
@@ -136,6 +135,7 @@ gulp.task('bundleLibs', function () {
   });
 
   b.bundle()
+    .on('error', console.error.bind(console))
     .pipe(source('libs.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))

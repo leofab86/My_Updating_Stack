@@ -1,8 +1,5 @@
 
 npm-debug.log
 node_modules
-dist
-server/distServer
 .idea
-/public/index.html
 /public/

@@ -1,7 +1,7 @@
 
 module.exports = {
 
-	port: 9005,
+	port: 9003,
 	devBaseUrl: 'http://localhost',
 
   paths: {

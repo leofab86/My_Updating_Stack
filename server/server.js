@@ -30,4 +30,4 @@ app.get('*', (req, res, next) => {
   res.render('index.html');
 })
 
-app.listen(9005);
+app.listen(config.port);
