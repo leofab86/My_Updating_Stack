@@ -26,32 +26,24 @@ var dependencies = Object.keys(packageJson.dependencies)
 
 gulp.task('default', ['devserver']);
 
-var server = gls.new(['--inspect', paths.distServerMain]);
+var server = gls.new(['--inspect', paths.srcServerMain]);
 var file;
 
 // ------------------------ DEVSERVER --------------------------
 // --------------------------------------------------------------
 
-gulp.task('devserver', ['lintApp', 'copySrcHtml', 'css', 'openServer']);
+gulp.task('devserver', ['lintApp', 'copyHtml', 'css', 'openServer']);
 
 
 gulp.task('openServer', ['serve'], function () {
-	gulp.src('dist/index.html')
+	gulp.src('public/index.html')
 		.pipe(open({ uri: devBaseUrl + ':' + port + '/'}));
 });
 
-gulp.task('serve', ['watchifyApp', 'bundleLibs', 'babelifyServer', 'lintServer'], function() {
+gulp.task('serve', ['watchifyApp', 'bundleLibs', 'lintServer'], function() {
 	server.start();
 
 	watchServer(server);
-});
-
-gulp.task('babelifyServer', function() {
-	return gulp.src(paths.srcServerjs)
-    .pipe(sourcemaps.init())
-		.pipe(babel())
-    .pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(paths.distServer));
 });
 
 gulp.task('lintServer', function(){
@@ -60,7 +52,7 @@ gulp.task('lintServer', function(){
 		.pipe(eslint.format())
 });
 
-gulp.task('copySrcHtml', function() {
+gulp.task('copyHtml', function() {
 	gulp.src(paths.srcHtml)
 		.pipe(gulp.dest(paths.dist))
 		.pipe(connect.reload())
@@ -68,18 +60,22 @@ gulp.task('copySrcHtml', function() {
 
 function watchServer (server) {
 
-	gulp.watch(paths.srcServerjs, ['babelifyServer', 'lintServer', function() {
-		server.start();
-	}])
+	gulp.watch(paths.srcServerjs, ['lintServer', function() {
+	  //First server.start shuts down server and tries to start but fails because debugger hasnt had time to detach. SetTimeout gives 2nd restart enough time
+    server.start()
+    setTimeout(()=>server.start(), 300)
+	}]).on('change', function(event) {
+    file = event;
+  })
 
-	gulp.watch(paths.srcHtml, ['copySrcHtml', function() {
-		server.notify.bind(server)(file);		
+	gulp.watch(paths.srcHtml, ['copyHtml', function() {
+		server.notify.bind(server)(file);
 	}]).on('change', function(event) {
 		file = event;
 	})
 
 	gulp.watch(paths.js, ['lintApp', function() {
-		//server.notify.bind(server)(file);
+		//Dont want to refresh server here because watchifyApp hasn't finished. Watchify takes care of refreshing server
 	}]).on('change', function(event) {
 		file = event;
 	})
@@ -95,7 +91,7 @@ function watchServer (server) {
 // ------------------------------------ FRONT END ----------------------------------------
 // ----------------------------------------------------------------------------------------
 
-gulp.task('frontend', ['copySrcHtml', 'watchifyApp', 'bundleLibs', 'css', 'lintApp', 'open', 'watch']);
+gulp.task('frontend', ['copyHtml', 'watchifyApp', 'bundleLibs', 'css', 'lintApp', 'open', 'watch']);
 
 
 //Start a local development server
@@ -149,7 +145,7 @@ gulp.task('bundleLibs', function () {
 
 
 gulp.task('watch', function () {
-	gulp.watch(paths.srcHtml, ['copySrcHtml'])
+	gulp.watch(paths.srcHtml, ['copyHtml'])
 	gulp.watch(paths.js, ['lintApp'])
 	gulp.watch(paths.css, ['css'])
 });
@@ -163,15 +159,12 @@ var b = watchify(browserify({
 }));
 
 b.external(dependencies)
-  .transform('babelify', {
-    presets: ['env', 'stage-0', "react"],
-    plugins: ['transform-decorators-legacy', 'transform-runtime', 'system-import-transformer'],
-    sourceMaps: true
-  })
+  .transform('babelify')
 
-gulp.task('watchifyApp', bundle); // so you can run `gulp js` to build the file
-b.on('update', bundle); // on any dep update, runs the bundler
+gulp.task('watchifyApp', bundle);
+b.on('update', bundle);
 b.on('log', function(msg) {
+  //Refresh server here after a delay because this way watchify has time to write the changes
   setTimeout(()=>{
     server.notify.bind(server)(file)
   }, 1000)
@@ -189,32 +182,3 @@ function bundle() {
     .pipe(gulp.dest(paths.dist + '/scripts'))
     .pipe(connect.reload())
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Old tasks
-
-gulp.task('babelifyApp', function () {
-  return browserify({
-    entries: paths.mainJs,
-    debug: true
-  })
-    .transform("babelify")
-    .bundle()
-    .on('error', console.error.bind(console))
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest(paths.dist + '/scripts'))
-    .pipe(connect.reload())
-});
