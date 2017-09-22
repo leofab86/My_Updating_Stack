@@ -1,4 +1,4 @@
-my_decorators v1.2.0
+My Updating Stack v1.2.0
 
 Update: Updated gulp build and node server. Removed Frame. Cleaned up app.
 
