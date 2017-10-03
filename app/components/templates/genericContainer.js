@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux'
 
-import { asyncGetPosts } from '../actions/reduxActions';
+import { asyncGetPosts } from '../../actions/application';
 import GenericComponent from './genericDumbComponent';
 
 

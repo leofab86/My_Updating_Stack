@@ -1,3 +1,25 @@
+/*----------------------------Grid-----------------------------*/
+.gridContainer {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 500px 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "left middle right";
+}
+
+.gridLeft {
+    grid-area: left;
+}
+
+.gridMiddle {
+    grid-area: middle;
+}
+
+.gridRight {
+    grid-area: right;
+}
+/*---------------------------------------------------------------*/
 /*----------------------------Misc-----------------------------*/
 .centerButton {
 	text-align:center;
@@ -10,34 +32,11 @@
 	margin-bottom: 20px;
 }
 
-.container {
-    padding-right: 15px;
-    padding-left: 0px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
 .cursorPointer {
 	cursor: pointer;
 }
 /*---------------------------------------------------------------*/
-/*----------------------------DataCards-----------------------------*/
-.dataContainer {
-	display:flex;
-	flex-wrap: wrap;
-	justify-content: center;
-}
-
-.dataCard {
-	flex-basis: auto;
-	border: 1px solid;
-	width: 230px;
-	text-align: center;
-	margin:10px;
-	cursor: pointer;
-}
-/*---------------------------------------------------------------*/
-/*----------------------globalPopup---------------------------*/
+/*--------------------------Modal---------------------------*/
 .fixedPlane {
 	z-index: 5;
 	position: fixed;
@@ -45,31 +44,20 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
 }
 
-.globalPopup {
+.myModal {
+    grid-column: 3 / 5;
+    grid-row: 2 / 6;
 	padding: 5px;
 	pointer-events: auto;
-	position: relative;
-	width:110%;
-	left:-5%;
-	top: 110px;
 	border: 1px solid;
 	border-radius: 10px;
 	text-align: center;
 	background-color: white;
-}
-
-.innerPopup {
-	padding-bottom: 20px;
-	padding-top: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
-	border: 2px solid;
-	border-color: #e2edff;
-	border-radius: 10px;
-	max-height:540px;
-	overflow: scroll;
 }
 
 .closeXButton {
@@ -80,17 +68,45 @@
 }
 /*------------------------------------------------------------*/
 /*--------------------------header----------------------------*/
-.navbar-brand {
+.header {
+    display: grid;
     position: absolute;
-    width: 100%;
-    left: 0;
     top: 0;
-    text-align: center;
-    margin: auto;
+    width: 100%;
+    height: 50px;
+    border-bottom: solid 1px black;
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-areas:
+        "home middle account";
 }
-.navbar-toggle {
-    z-index:3;
+
+.home {
+    grid-area: home;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 20px;
 }
+
+.home a {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.account {
+    grid-area: account;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 0px;
+}
+
+.account a {
+    margin: 0 15px 0 20px;
+    cursor: pointer;
+}
+
+
 /*-------------------------------------------------------------*/
 /*------------------------------tabs---------------------------*/
 .tab {

@@ -3,49 +3,51 @@ import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
-import {asyncGetPosts} from '../actions/reduxActions'
-import Header from '../components/header';
-import Modal from '../components/modal';
+import * as app from '../actions/application'
+import Header from '../components/mainContainer/header';
+import Modal from '../components/mainContainer/modal';
 
 
-const mapStateToProps = (appState) => {
-	return {appState}
-}
+const mapStateToProps = (state) => ({
+	modal: state.modal
+})
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  asyncGetPosts
+  reduxControlModal: app.controlModal,
+	asyncGetPosts: app.asyncGetPosts
 }, dispatch)
 
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class MainContainer extends React.PureComponent {
-	
+
+  constructor(props){
+    super()
+    this.appControl = {
+      reduxControlModal: props.reduxControlModal,
+      asyncGetPosts: props.asyncGetPosts
+    }
+  }
+
 	render(){
-		const { Component, appState, ...rest } = this.props;
-
-    const asyncGetPosts = this.props.asyncGetPosts
-
-		const componentName = Component.displayName || Component.name;
-		const stateRouter = {
-			Stateful: () => {
-				return { thisIs: 'stateful' }
-			},
-			Functional: () => {
-				return { thisIs: 'functional', asyncGetPosts }
-			},
-			ReduxContainer: () => {
-				return { thisIs: 'reduxContainer' }
-			},
-		}
+		const { Component, reduxControlModal, ...rest } = this.props;
 
 		return (
 			<Route {...rest} render={routeProps => 
 				<div>			
-					<Header />
-					<div className='container'>
-						<Component {...routeProps} {...stateRouter[componentName]()}/>
+					<Header app={this.appControl}/>
+
+          <div className='gridContainer'>
+            <div className="gridLeft"/>
+
+            <div className="gridMiddle">
+              <Component {...routeProps} app={this.appControl}/>
+            </div>
+
+            <div className="gridRight"/>
 					</div>
-					<Modal />
+
+					<Modal {...this.props.modal} reduxControlModal={reduxControlModal}/>
 				</div>
 			}/>
 		);

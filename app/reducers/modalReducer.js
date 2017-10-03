@@ -8,7 +8,7 @@ export default function modalReducer ( state = {
 }, action) {
   switch (action.type) {
     case MODAL:
-      return {...state, ...action.popupObj}
+      return {...state, ...action.modal}
     default:
       return state
   }

@@ -1,12 +1,15 @@
 import React from 'react';
+import is from 'prop-types'
 import { BrowserHistory } from 'react-router-dom';
 
 import Tabs from '../common/tabs';
-import {newPost, getPosts} from '../../actions/api'
 
+
+Functional.propTypes = {
+	asyncGetPosts: is.func
+}
 
 function Functional (props) {
-	console.log(props);
 
   const click = async () => {
     console.log(await props.asyncGetPosts())
@@ -20,9 +23,8 @@ function Functional (props) {
 		props.history.push('/stateful')
 	}
 
-	const grid = "col-xs-10 col-sm-10 col-md-8 col-lg-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-3";
 	return (
-		<div className={grid}>
+		<div className={''}>
 			<h1>I am a functional Component</h1>
 			<button onClick={click}>Test Button</button>
 			<br/><br/>

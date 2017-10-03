@@ -10,7 +10,6 @@ import MainContainer from './containers/mainContainer';
 import Stateful from './components/test/stateful';
 import Functional from './components/test/functional';
 import ReduxContainer from './components/test/reduxContainer';
-import Login from './components/login';
 
 
 
@@ -49,7 +48,6 @@ export function renderApp() {
 						<MainContainer exact path='/stateful' Component={Stateful}/>
 						<MainContainer path='/stateful/:param' Component={Stateful}/>
 						<MainContainer path='/redux' Component={ReduxContainer}/>
-						<MainContainer path='/login' Component={Login}/>
 					</Switch>
 				</Router>
 			</div>

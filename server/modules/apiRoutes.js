@@ -16,7 +16,7 @@ module.exports = (app) => {
 		});	
 		
 	})
-	.get((req, res) => {		
+	.get((req, res) => {
 		Post.find(function(error, data){
 			res.send(data)
 		});

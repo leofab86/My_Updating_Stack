@@ -1,6 +1,6 @@
 {
   "name": "my_updating_stack",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Leo's latest development environment stack",
   "scripts": {
     "gulp": "gulp"

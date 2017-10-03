@@ -1,7 +1,7 @@
 import React from 'react';
 import is from 'prop-types';
 
-import TextInput from './common/textInput';
+import TextInput from '../common/textInput';
 
 
 export default class COMPONENTNAME extends React.PureComponent {
