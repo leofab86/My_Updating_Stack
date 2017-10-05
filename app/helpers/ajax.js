@@ -9,6 +9,7 @@ function generateMethod (type) {
 			$.ajax({
 				url,
 				type,
+				contentType: "application/json; charset=utf-8",
         ...(options ? options : {}),
 				success: function (data, status, xhr) {
 					console.log('AJAX LOGGING: ', arguments);
